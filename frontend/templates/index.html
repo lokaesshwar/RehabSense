@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+
+{% block title %}RehabSense - Home{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">Welcome to RehabSense</h1>
+            <p class="hero-subtitle">Comprehensive AI-powered health monitoring for rehabilitation patients</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="feature-icon">💓</span>
+                    <h3>Heartbeat Analysis</h3>
+                    <p>Monitor heart rhythm and detect abnormalities</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🍬</span>
+                    <h3>Glucose Tracking</h3>
+                    <p>Estimate blood glucose ranges</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🌬️</span>
+                    <h3>Breathing Patterns</h3>
+                    <p>Detect irregularities in breathing</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🗣️</span>
+                    <h3>Speech Analysis</h3>
+                    <p>Analyze speech patterns and clarity</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">😊</span>
+                    <h3>Emotional State</h3>
+                    <p>Track emotional wellbeing over time</p>
+                </div>
+                <div class="feature-card">
+                    <span class="feature-icon">🧍</span>
+                    <h3>Posture Detection</h3>
+                    <p>Monitor posture and get corrections</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="login-section">
+            <div class="login-card">
+                <h2>Patient Login</h2>
+                <p>Enter your patient ID to access your health dashboard</p>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="patientId">Patient ID</label>
+                        <input type="text" id="patientId" name="patientId" 
+                               placeholder="Enter A or B" 
+                               maxlength="1" 
+                               required>
+                    </div>
+                    <button type="submit" class="btn-primary">Login</button>
+                </form>
+                
+                <div class="demo-info">
+                    <p><strong>Demo Patients:</strong></p>
+                    <ul>
+                        <li><strong>Patient A:</strong> Single report analysis</li>
+                        <li><strong>Patient B:</strong> Progress tracking (12 weeks)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('loginForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const patientId = document.getElementById('patientId').value.toUpperCase();
+    
+    try {
+        const response = await fetch('/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ patient_id: patientId })
+        });
+        
+        const data = await response.json();
+        
+        if (data.success) {
+            window.location.href = '/dashboard';
+        } else {
+            alert(data.message || 'Login failed. Please use Patient ID: A or B');
+        }
+    } catch (error) {
+        alert('Error logging in. Please try again.');
+    }
+});
+</script>
+{% endblock %}
